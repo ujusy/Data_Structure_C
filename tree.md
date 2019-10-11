@@ -4,7 +4,7 @@
 
 ## binary tree
 
-https://user-images.githubusercontent.com/49120090/66663378-98361f00-ec85-11e9-8a21-063355d05ad4.png
+![image](https://user-images.githubusercontent.com/49120090/66663378-98361f00-ec85-11e9-8a21-063355d05ad4.png)
 
 
 
@@ -12,7 +12,7 @@ https://user-images.githubusercontent.com/49120090/66663378-98361f00-ec85-11e9-8
 >
 >배열로 나타낼 경우는 밑의 사진과 같다.
 
-https://user-images.githubusercontent.com/49120090/66663395-a2f0b400-ec85-11e9-9b0e-8f2a3a8387e4.png
+![image](https://user-images.githubusercontent.com/49120090/66663395-a2f0b400-ec85-11e9-9b0e-8f2a3a8387e4.png)
 
 >배열로 나타낼 경우의 단점이 존재한다.
 >
