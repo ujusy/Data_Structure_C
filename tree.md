@@ -4,13 +4,15 @@
 
 ## binary tree
 
-![image-20191007210518984](/Users/uju_sy/Library/Application Support/typora-user-images/image-20191007210518984.png)
+https://user-images.githubusercontent.com/49120090/66663378-98361f00-ec85-11e9-8a21-063355d05ad4.png
+
+
 
 >binary tree는 배열로 나타낼 수 있다.
 >
 >배열로 나타낼 경우는 밑의 사진과 같다.
 
-![image-20191007210646547](/Users/uju_sy/Library/Application Support/typora-user-images/image-20191007210646547.png)
+https://user-images.githubusercontent.com/49120090/66663395-a2f0b400-ec85-11e9-9b0e-8f2a3a8387e4.png
 
 >배열로 나타낼 경우의 단점이 존재한다.
 >
