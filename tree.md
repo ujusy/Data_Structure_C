@@ -1,3 +1,5 @@
+
+
 # TREE
 
 
@@ -246,107 +248,345 @@ int main(){
 
 
 
-#### >iterative inorder traversal
+#### >iterative traversal
 
 > binary tree ->재귀 호출 사용->비효율적 
 >
-> Threaded binary tree 는 n+1개의 null링크에서 inorder순회시 선행노드,후속노드를 저장하는 tree
+> iterative는 노드에 visited를 둔다.
 
-
+##### node 구조체
 
 ~~~c
-void iter_inorder(tree_ptr node){
-  int top=-1;
-  tree_ptr stack[MAX_STACK_SIZE];
-  while(1){
-    while(node){
-      push(&top,node);
-      node=node->left_child;
+typedef struct node *tree_ptr;
+typedef struct node{
+    char data;
+    tree_ptr left,right;
+    int visited;
+}node;
+~~~
+
+##### inorder: 좌->근->우
+
+~~~c
+void iter_inorder(tree_ptr node){ //root가 들어와.
+    top=-1; 
+    while(1){
+        while(node){  //node가 null이 아니면 //NULL이면 pop!
+            push(&top,node); //처음 노드 삽입.
+            node=node->left; //계속 왼쪽으로 내려가
+        }
+        if(!isEmpty()){  //스택 안비었으면
+            node=pop(&top); 
+        }
+        else break;
+        printf("%c",node->data);//처음에 A ->pop하면 /
+        node=node->right;//A의 right는 NULL->pop right는 B
     }
-    node=pop(&top);
-    if(!node) break;
-    printf("%d",node->data);
-    node=node->right_child;
-  }
+}
+~~~
+
+##### preorder:근->좌->우
+
+~~~c
+void iter_preorder(tree_ptr node){
+    top=-1;
+    while(1){
+        while(node){ 
+            printf("%c",node->data); //1.root data출력 2.* 3.* 4./ 5.A /B/C/D/E
+            push(&top,node); //1..root노드 삽입.  2.*삽입 3.* 4./ 5.A
+            node=node->left; //1.*가리켜 2.* 3./ 4.A 5.NULL
+        }
+        if(!isEmpty())
+        {
+            node=pop(&top);  //A //* //* //+
+        }else break;
+        node=node->right; //A->right=B //*->right=C //D //E
+    }
+}
+~~~
+
+##### postorder: 좌->우->근 
+
+~~~c
+void iter_postorder(tree_ptr node){ //root
+    top=-1;
+    push(&top,node); //root
+    while(1){
+        node=stack[top]; //stack노드를 가리켜 //* //* // / //A >POP>// / //*  //* //+ 
+        if(node->left !=NULL && node->left->visited!=1){ 
+            push(&top,node->left);//* //* // / //A 
+
+        }
+        else if(node->right !=NULL && node->right->visited !=1){
+            push(&top,node->right); //B //C //D //E
+        }
+        else{
+            printf("%c",node->data); //A //B // / //C //* //D //* //E //+
+            node->visited=1;
+            pop(&top);
+        }
+        if(isEmpty()){
+            break;
+        }
+        
+    }
 }
 ~~~
 
 
 
-#### Level order traversal
+>전체 코드 및 결과
+
+~~~c
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX_STACK_SIZE 10
+
+typedef struct node *tree_ptr;
+typedef struct node{
+    char data;
+    tree_ptr left,right;
+    int visited;
+}node;
+
+tree_ptr makeNode(char value,tree_ptr leftnode,tree_ptr rightnode){
+    tree_ptr ptr=(tree_ptr)malloc(sizeof(node));
+    ptr->data=value;
+    ptr->left=leftnode;
+    ptr->right=rightnode;
+    
+    return ptr;
+}
+
+int top=-1;
+tree_ptr stack[MAX_STACK_SIZE];
+
+int isEmpty(){
+    return(top<0);
+}
+
+int isFull(){
+    return(top>=MAX_STACK_SIZE-1);
+}
+void push(int *ptop,tree_ptr item){
+    if(isFull()){
+        printf("Stack is Full");
+        return;
+    }
+    stack[++*ptop]=item;
+}
+tree_ptr pop(int *ptop){
+    return stack[(*ptop)--];
+}
+void printStack(){
+    if(!isEmpty()){
+        for(int i=0;i<top+1;i++){
+            printf("%c",stack[i]->data);
+        }
+    }
+}
+void iter_inorder(tree_ptr node){ 
+    top=-1; 
+    while(1){
+        while(node){  
+            push(&top,node); 
+            node=node->left; 
+        }
+        if(!isEmpty()){  
+            node=pop(&top); 
+        }
+        else break;
+        printf("%c",node->data);
+        node=node->right;
+    }
+}
+void iter_preorder(tree_ptr node){
+    top=-1;
+    while(1){
+        while(node){ 
+            printf("%c",node->data); 
+            push(&top,node); 
+            node=node->left; 
+        }
+        if(!isEmpty())
+        {
+            node=pop(&top);  
+        }else break;
+        node=node->right; 
+    }
+}
+void iter_postorder(tree_ptr node){
+    top=-1;
+    push(&top,node);
+    while(1){
+        node=stack[top];
+        if(node->left !=NULL && node->left->visited!=1){
+            push(&top,node->left);
+
+        }
+        else if(node->right !=NULL && node->right->visited !=1){
+            push(&top,node->right);
+        }
+        else{
+            printf("%c",node->data);
+            node->visited=1;
+            pop(&top);
+        }
+        if(isEmpty()){
+            break;
+        }
+        
+    }
+}
+int main(){
+    tree_ptr root,n2,n3,n4,n5,n6,n7,n8,n9;
+    n9=makeNode('E',NULL,NULL);
+    n8=makeNode('D',NULL,NULL);
+    n7=makeNode('C',NULL,NULL);
+    n6=makeNode('B',NULL,NULL);
+    n5=makeNode('A',NULL,NULL);
+    n4=makeNode('/',n5,n6);
+    n3=makeNode('*',n4,n7);
+    n2=makeNode('*',n3,n8);
+    root=makeNode('+',n2,n9);
+    
+    printf("\ninorder : ");
+    iter_inorder(root);
+    printf("\npreorder : ");
+    iter_preorder(root);
+    printf("\npostorder : ");
+    iter_postorder(root);
+
+    return 0;
+}
+~~~
+
+<img width="304" alt="image-20191013172506289" src="https://user-images.githubusercontent.com/49120090/66716097-36042800-ee05-11e9-9ba0-1125e69e633c.png">
+
+
+
+#### Level order traversal :	Queue 이용
+
+![image-20191013215656477](/Users/uju_sy/Library/Application Support/typora-user-images/image-20191013215656477.png)
+
+##### node 구조체 및 queue선언
+
+~~~c
+typedef struct node *tree_ptr;
+typedef struct node{
+    char data;
+    tree_ptr left,right;
+    int visited;
+}node;
+int front,rear=0;
+tree_ptr queue[MAX_QUEUE_SIZE];
+~~~
 
 -traversal by using queue
 
 ~~~c
-void level_order(tree_ptr ptr){
-  int front= rear = 0;
-  tree_ptr queue[MAX_QUEUE_SIZE];
- 	if(!ptr) return ;
-  while(1){
-    ptr=deleteq(&front,rear);
-    if(ptr){
-      printf("%d",ptr->data);
-      if(ptr->left_child)
-        addq(front,&rear,ptr->left_child);
-     	if(ptr->right_child)
-        addq(front,&rear,ptr->right_child);
+void level_order(tree_ptr node){ //root
+    addq(&rear,node);
+    while(1){
+        node=deleteq(&front);
+        if(node){
+            printf("%c ",node->data);
+            if(node->left){
+                addq(&rear,node->left);
+            }
+            if(node->right){
+                addq(&rear,node->right);
+            }
+        }
+        if(isEmptyQ())  break;
     }
-    else break;
-  }
 }
 ~~~
 
-## Threaded Binary Tree
-
->바이너리 트리에 NULL링크가 많았는데 이러한 부분을 효율적으로 사용하기 위해 사용.
->
->후속노드를 구하기위헤서 우측 포인터를 본다 f면 뒤에 child존재 
->
->왼쪽 보니 true ->앞에 너무 포인터 ->후속노드 우측을 보면 true->NULL링크
->
->중위 순회
-
-
-
-후속노드 찾는 프로그램
+>전체 코드 및 결과
 
 ~~~c
-threaded_ptr insucc(threaded_ptr tree) {
-threaded_ptr temp;
-temp = tree->right_child;
-if (!tree->right_thread)
-while (!temp->left_thread)
-temp = temp->left_child;
-return temp;
-}
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX_QUEUE_SIZE 10
 
-void tinorder(threaded_ptr tree) {
-threaded_ptr temp = tree;
-for (;;) {
- temp = insucc(temp);
- if (temp = tree) break;
- printf(“%3c”, temp->data);
-}
-}
+typedef struct node *tree_ptr;
+typedef struct node{
+    char data;
+    tree_ptr left,right;
+    int visited;
+}node;
 
+tree_ptr makeNode(char value,tree_ptr leftnode,tree_ptr rightnode){
+    tree_ptr ptr=(tree_ptr)malloc(sizeof(node));
+    ptr->data=value;
+    ptr->left=leftnode;
+    ptr->right=rightnode;
+
+    return ptr;
+}
+int front,rear=0;
+tree_ptr queue[MAX_QUEUE_SIZE];
+
+int isEmptyQ(){
+    return (front==rear);
+}
+int isFullQ(){
+    return((rear+1)%MAX_QUEUE_SIZE ==front);
+}
+void addq(int *prear,tree_ptr node){
+    if(isFullQ()){
+        printf("Queue is full\n");
+        return ;
+    }
+    *prear=(*prear+1)%MAX_QUEUE_SIZE;
+    queue[*prear]=node;
+    
+}
+tree_ptr deleteq(int *pfront){
+    if(isEmptyQ()){
+        printf("Queue is empty\n");
+        return 0;
+    }
+    *pfront=(*pfront +1)%MAX_QUEUE_SIZE;
+    return queue[*pfront];
+}
+void level_order(tree_ptr node){
+    addq(&rear,node);
+    while(1){
+        node=deleteq(&front);
+        if(node){
+            printf("%c ",node->data);
+            if(node->left){
+                addq(&rear,node->left);
+            }
+            if(node->right){
+                addq(&rear,node->right);
+            }
+        }
+        if(isEmptyQ())  break;
+    }
+}
+int main(){
+    tree_ptr root,n2,n3,n4,n5,n6,n7,n8,n9;
+    n9=makeNode('E',NULL,NULL);
+    n8=makeNode('D',NULL,NULL);
+    n7=makeNode('C',NULL,NULL);
+    n6=makeNode('B',NULL,NULL);
+    n5=makeNode('A',NULL,NULL);
+    n4=makeNode('/',n5,n6);
+    n3=makeNode('*',n4,n7);
+    n2=makeNode('*',n3,n8);
+    root=makeNode('+',n2,n9);
+    
+    printf("level_order: ");
+    level_order(root);
+
+    return 0;
+}
 ~~~
 
-삽입하고자 할때의 코드
+<결과>
 
-~~~c
-void insert_right(threaded_ptr parent,threaded_ptr child) {
-threaded_ptr temp;
-child->right_child=parent->right_child;
-child->right_thread=parent->right_thread;
-child->left_child=parent;
-child->left_thread=TRUE;
-parent->right_child=child;
-parent->right_thread=FALSE;
-if(!child->right_thread) {
-temp=insucc(child);
-temp->left_child=child;
-}
-}
-
-~~~
+<img width="206" alt="image-20191013183338657" src="https://user-images.githubusercontent.com/49120090/66716105-4d431580-ee05-11e9-808d-d4e922c91ae8.png">
 
