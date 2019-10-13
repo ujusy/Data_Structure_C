@@ -20,7 +20,9 @@
 
 
 
-![image-20191013223719821](/Users/uju_sy/Library/Application Support/typora-user-images/image-20191013223719821.png)
+<img width="345" alt="image-20191013223719821" src="https://user-images.githubusercontent.com/49120090/66718073-9ea9cf80-ee1a-11e9-9e8f-cf40e158c0b0.png">
+
+
 
 ##### threaded node 구조체
 
@@ -35,7 +37,9 @@ typedef struct threaded_tree{
 }
 ~~~
 
-![image-20191013223626444](/Users/uju_sy/Library/Application Support/typora-user-images/image-20191013223626444.png)
+<img width="276" alt="image-20191013223626444" src="https://user-images.githubusercontent.com/49120090/66718080-a9fcfb00-ee1a-11e9-8079-08794f71d8b0.png">
+
+
 
 #####후속노드 찾는 코드
 
@@ -193,5 +197,7 @@ int main() {
 
 <결과>
 
-![image-20191014001612078](/Users/uju_sy/Library/Application Support/typora-user-images/image-20191014001612078.png)
+<img width="480" alt="image-20191014001612078" src="https://user-images.githubusercontent.com/49120090/66718085-b719ea00-ee1a-11e9-826c-41d813e21fe5.png">
+
+
 
