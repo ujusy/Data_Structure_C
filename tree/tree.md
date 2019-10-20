@@ -112,7 +112,7 @@ int main(){
 }
 ~~~
 
-![image-20191010152244984](/Users/uju_sy/Library/Application Support/typora-user-images/image-20191010152244984.png)
+<img width="192" alt="image-20191010152244984" src="https://user-images.githubusercontent.com/49120090/67157025-0f904080-f361-11e9-82f9-8d9245a44224.png">
 
 #### preorder traversal
 
