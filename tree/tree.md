@@ -48,7 +48,7 @@
 
  ##### 1.inorder traversal
 
-![image-20191007211910586](/Users/uju_sy/Library/Application Support/typora-user-images/image-20191007211910586.png)
+<img width="438" alt="image-20191007211910586" src="https://user-images.githubusercontent.com/49120090/67156999-c0e2a680-f360-11e9-8fc8-345d8e448d65.png">
 
 ~~~c
 void inorder(tree_ptr ptr){
@@ -467,7 +467,7 @@ int main(){
 
 #### Level order traversal :	Queue 이용
 
-![image-20191013215656477](/Users/uju_sy/Library/Application Support/typora-user-images/image-20191013215656477.png)
+<img width="352" alt="image-20191013215656477" src="https://user-images.githubusercontent.com/49120090/67157006-d061ef80-f360-11e9-8dde-bed644409f43.png">
 
 ##### node 구조체 및 queue선언
 
